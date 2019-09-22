@@ -10,17 +10,10 @@ namespace Okolni.SourceEngine.Example
         {
             IQueryConnection conn = new QueryConnection();
 
-            // VALGUERO
+            // ARK VALGUERO Server
             conn.Host = "89.163.146.91";
             conn.Port = 27023;
-
-            // THE SHIP
-            //conn.Host = "178.251.24.141";
-            //conn.Port = 27017;
-
-            // CS:GO Multi
-            //conn.Host = "94.250.219.40";
-            //conn.Port = 27015;
+            
             conn.Connect();
             var info = conn.GetInfo();
             var players = conn.GetPlayers();
