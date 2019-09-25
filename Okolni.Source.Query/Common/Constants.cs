@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using static Okolni.SourceEngine.Common.Enums;
+using static Okolni.Source.Common.Enums;
 
-namespace Okolni.SourceEngine.Common
+namespace Okolni.Source.Common
 {
     public static class Constants
     {

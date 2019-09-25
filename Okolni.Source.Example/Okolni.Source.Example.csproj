@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Okolni.SourceEngine.Query\Okolni.SourceEngine.Query.csproj" />
+    <ProjectReference Include="..\Okolni.Source.Query\Okolni.Source.Query.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Okolni.SourceEngine.Query.Responses
+namespace Okolni.Source.Query.Responses
 {
     public class RuleResponse
     {

@@ -1,4 +1,4 @@
-﻿namespace Okolni.SourceEngine.Common.ByteHelper
+﻿namespace Okolni.Source.Common.ByteHelper
 {
     public interface IByteReader
     {

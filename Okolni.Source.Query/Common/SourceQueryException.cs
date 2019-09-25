@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Okolni.SourceEngine.Common
+namespace Okolni.Source.Common
 {
     [Serializable]
     public class SourceQueryException : Exception

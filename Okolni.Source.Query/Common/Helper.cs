@@ -1,8 +1,8 @@
 ﻿using System;
-using Okolni.SourceEngine.Common.ByteHelper;
-using static Okolni.SourceEngine.Common.Enums;
+using Okolni.Source.Common.ByteHelper;
+using static Okolni.Source.Common.Enums;
 
-namespace Okolni.SourceEngine.Common
+namespace Okolni.Source.Common
 {
     public static class Helper
     {

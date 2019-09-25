@@ -2,21 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Florian Adler</Authors>
-    <Product>Okolni Source Engine Query</Product>
+    <Product>Okolni Source Query</Product>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>This package can be used for Source Engine Query Requests.
+    <Description>This package can be used for Source Query Requests.
 
 It's in an early alpha state at the moment.</Description>
     <Copyright>Florian Adler</Copyright>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/users/Florian2406/projects/1</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Florian2406/Okolni-SourceEngine-Ouery</RepositoryUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Florian2406/Okolni-Source-Ouery</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageReleaseNotes>0.0.1 Initial Release. Can use Source Engine Query but not multipacket or goldsource. EARLY ALPHA</PackageReleaseNotes>
+    <PackageReleaseNotes>0.0.1 Initial Release. Can use Source Engine Query but not multipacket or goldsource.
+0.0.2 Rename to Okolni Source Query (instead of Okolni Source Engine Query)</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Okolni.Source.Query</PackageId>
+    <FileVersion>0.0.2.0</FileVersion>
   </PropertyGroup>
 
 </Project>

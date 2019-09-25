@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Okolni.SourceEngine.Common;
-using Okolni.SourceEngine.Common.ByteHelper;
-using Okolni.SourceEngine.Query.Responses;
-using static Okolni.SourceEngine.Common.Enums;
+using Okolni.Source.Common;
+using Okolni.Source.Common.ByteHelper;
+using Okolni.Source.Query.Responses;
+using static Okolni.Source.Common.Enums;
 
-namespace Okolni.SourceEngine.Query
+namespace Okolni.Source.Query
 {
     public class QueryConnection : IQueryConnection
     {
