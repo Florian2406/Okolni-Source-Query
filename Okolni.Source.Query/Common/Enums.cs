@@ -1,4 +1,4 @@
-﻿namespace Okolni.SourceEngine.Common
+﻿namespace Okolni.Source.Common
 {
     public static class Enums
     {

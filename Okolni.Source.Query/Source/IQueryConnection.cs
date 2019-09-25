@@ -1,7 +1,7 @@
-﻿using Okolni.SourceEngine.Query.Responses;
+﻿using Okolni.Source.Query.Responses;
 using System;
 
-namespace Okolni.SourceEngine.Query
+namespace Okolni.Source.Query
 {
     public interface IQueryConnection
     {

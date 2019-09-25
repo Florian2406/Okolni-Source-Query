@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Okolni.SourceEngine.Common.ByteHelper
+namespace Okolni.Source.Common.ByteHelper
 {
     public class ByteReader : IByteReader
     {

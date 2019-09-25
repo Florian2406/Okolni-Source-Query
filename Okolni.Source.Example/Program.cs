@@ -1,8 +1,8 @@
-﻿using Okolni.SourceEngine.Query;
-using Okolni.SourceEngine.Common;
+﻿using Okolni.Source.Query;
+using Okolni.Source.Common;
 using System;
 
-namespace Okolni.SourceEngine.Example
+namespace Okolni.Source.Example
 {
     class Program
     {
@@ -10,7 +10,7 @@ namespace Okolni.SourceEngine.Example
         {
             IQueryConnection conn = new QueryConnection();
 
-            // ARK VALGUERO Server
+            // Exampleserver: ARK VALGUERO Server
             conn.Host = "89.163.146.91";
             conn.Port = 27023;
             

@@ -1,10 +1,10 @@
-﻿using Okolni.SourceEngine.Common;
+﻿using Okolni.Source.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static Okolni.SourceEngine.Common.Enums;
+using static Okolni.Source.Common.Enums;
 
-namespace Okolni.SourceEngine.Query.Responses
+namespace Okolni.Source.Query.Responses
 {
     public class InfoResponse : IResponse
     {
