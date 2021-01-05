@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Okolni.Source.Query\Okolni.Source.Query.csproj" />
+    <ProjectReference Include="..\..\src\Okolni.Source.Query\Okolni.Source.Query.csproj" />
   </ItemGroup>
 
 </Project>

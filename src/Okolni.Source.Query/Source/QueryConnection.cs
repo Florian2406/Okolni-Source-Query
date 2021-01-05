@@ -61,7 +61,7 @@ namespace Okolni.Source.Query
         /// <inheritdoc />
         public void Disconnect()
         {
-            if(m_udpClient != null)
+            if (m_udpClient != null)
             {
                 if (m_udpClient.Client != null && m_udpClient.Client.Connected)
                 {
@@ -182,14 +182,15 @@ namespace Okolni.Source.Query
                 request(req);
                 byte[] response = fetchResponse();
                 IByteReader byteReader = response.GetByteReader();
-                if (!byteReader.GetByte().Equals(0x41))
-                    throw new ArgumentException("Response was no challenge response.");
-                req[5] = byteReader.GetByte();
-                req[6] = byteReader.GetByte();
-                req[7] = byteReader.GetByte();
-                req[8] = byteReader.GetByte();
-                request(req);
-                response = fetchResponse();
+                if (byteReader.GetByte().Equals(0x41))
+                {
+                    req[5] = byteReader.GetByte();
+                    req[6] = byteReader.GetByte();
+                    req[7] = byteReader.GetByte();
+                    req[8] = byteReader.GetByte();
+                    request(req);
+                    response = fetchResponse();
+                }
                 byteReader = response.GetByteReader();
                 byte header = byteReader.GetByte();
                 if (!header.Equals(0x44))
@@ -242,14 +243,15 @@ namespace Okolni.Source.Query
                 request(req);
                 byte[] response = fetchResponse();
                 IByteReader byteReader = response.GetByteReader();
-                if (!byteReader.GetByte().Equals(0x41))
-                    throw new ArgumentException("Response was no challenge response.");
-                req[5] = byteReader.GetByte();
-                req[6] = byteReader.GetByte();
-                req[7] = byteReader.GetByte();
-                req[8] = byteReader.GetByte();
-                request(req);
-                response = fetchResponse();
+                if (byteReader.GetByte().Equals(0x41))
+                {
+                    req[5] = byteReader.GetByte();
+                    req[6] = byteReader.GetByte();
+                    req[7] = byteReader.GetByte();
+                    req[8] = byteReader.GetByte();
+                    request(req);
+                    response = fetchResponse();
+                }
                 byteReader = response.GetByteReader();
                 byte header = byteReader.GetByte();
                 if (!header.Equals(0x45))
