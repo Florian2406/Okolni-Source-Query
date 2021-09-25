@@ -3,16 +3,18 @@ using System.Text;
 
 namespace Okolni.Source.Common.ByteHelper
 {
+    /// <inheritdoc/>
     public class ByteReader : IByteReader
     {
         private int _iterator = 0;
         private byte[] _response;
 
+        /// <inheritdoc/>
         public byte[] Response
         {
             get
             {
-                if(_response == null)
+                if (_response == null)
                     throw new ArgumentNullException("Response has to be set in order to get values from it");
 
                 return _response;
@@ -23,6 +25,8 @@ namespace Okolni.Source.Common.ByteHelper
                 Iterator = 0;
             }
         }
+
+        /// <inheritdoc/>
         public int Iterator
         {
             get
@@ -37,6 +41,8 @@ namespace Okolni.Source.Common.ByteHelper
                     _iterator = -1;
             }
         }
+
+        /// <inheritdoc/>
         public int Remaining
         {
             get
@@ -47,17 +53,13 @@ namespace Okolni.Source.Common.ByteHelper
             }
         }
 
+        /// <inheritdoc/>
         public ByteReader(byte[] response)
         {
             Response = response;
         }
 
-        /// <summary>
-        /// Gets the ByteArray from the iterator with the specified length
-        /// </summary>
-        /// <param name="length">length to get</param>
-        /// <returns>bytearray</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <inheritdoc/>
         public byte[] GetBytes(int length)
         {
             if (length <= 0)
@@ -70,11 +72,7 @@ namespace Okolni.Source.Common.ByteHelper
             return val;
         }
 
-        /// <summary>
-        /// Gets the Byte Value at the current iterator position
-        /// </summary>
-        /// <returns>Byte value</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <inheritdoc/>
         public byte GetByte()
         {
             if (Remaining < 1)
@@ -85,16 +83,10 @@ namespace Okolni.Source.Common.ByteHelper
             return val;
         }
 
-        /// <summary>
-        /// Gets the Float Value at the current iterator position
-        /// </summary>
-        /// <returns>Float value</returns>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <inheritdoc/>
         public float GetFloat()
         {
-            if(Remaining < 4)
+            if (Remaining < 4)
                 throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
 
             float floatValue = BitConverter.ToSingle(Response, Iterator);
@@ -103,6 +95,7 @@ namespace Okolni.Source.Common.ByteHelper
             return floatValue;
         }
 
+        /// <inheritdoc/>
         public short GetShort()
         {
             if (Remaining < 2)
@@ -114,9 +107,10 @@ namespace Okolni.Source.Common.ByteHelper
             return shortValue;
         }
 
+        /// <inheritdoc/>
         public int GetInt()
         {
-            if(Remaining < 4)
+            if (Remaining < 4)
                 throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
 
             int intValue = BitConverter.ToInt32(Response, Iterator);
@@ -125,6 +119,7 @@ namespace Okolni.Source.Common.ByteHelper
             return intValue;
         }
 
+        /// <inheritdoc/>
         public uint GetLong()
         {
             if (Remaining < 4)
@@ -136,6 +131,7 @@ namespace Okolni.Source.Common.ByteHelper
             return longValue;
         }
 
+        /// <inheritdoc/>
         public string GetString()
         {
             if (Remaining < 1)
@@ -153,6 +149,7 @@ namespace Okolni.Source.Common.ByteHelper
             return stringValue;
         }
 
+        /// <inheritdoc/>
         public byte[] GetRemaining(int? iterator = null)
         {
             if (iterator == null)

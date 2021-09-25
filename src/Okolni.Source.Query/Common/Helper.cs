@@ -4,8 +4,19 @@ using static Okolni.Source.Common.Enums;
 
 namespace Okolni.Source.Common
 {
+    /// <summary>
+    /// Helper class with static methods to help with arrays and other stuff
+    /// </summary>
     public static class Helper
     {
+        /// <summary>
+        /// Gets a subarray specified by the index and the length
+        /// </summary>
+        /// <param name="data">The array to get the subarray from</param>
+        /// <param name="index">The index from where to get the subarray</param>
+        /// <param name="length">The length of the subarray to extract</param>
+        /// <typeparam name="T">The generic type of the array</typeparam>
+        /// <returns>The sub array</returns>
         public static T[] SubArray<T>(this T[] data, int index, int length)
         {
             T[] result = new T[length];
@@ -13,6 +24,14 @@ namespace Okolni.Source.Common
             return result;
         }
 
+        /// <summary>
+        /// Inserts an array into another array
+        /// </summary>
+        /// <param name="data">the array to insert</param>
+        /// <param name="index">the index at which the array should be inserted</param>
+        /// <param name="arrayToInsert">the array to insert</param>
+        /// <typeparam name="T">The generic type of the array</typeparam>
+        /// <returns>the original array with the inserted one</returns>
         public static T[] InsertArray<T>(this T[] data, int index, T[] arrayToInsert)
         {
             int maxlength = data.Length - index;

@@ -1,8 +1,6 @@
 ﻿using Okolni.Source.Query;
-using Okolni.Source.Common;
 using System;
 using System.Linq;
-using System.Threading;
 
 namespace Okolni.Source.Example
 {
