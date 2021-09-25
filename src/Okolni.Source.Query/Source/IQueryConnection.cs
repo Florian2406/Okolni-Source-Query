@@ -42,8 +42,22 @@ namespace Okolni.Source.Query
         /// <exception cref="PlatformNotSupportedException"></exception>
         void Disconnect();
 
-        InfoResponse GetInfo();
-        PlayerResponse GetPlayers();
-        RuleResponse GetRules();
+        /// <summary>
+        /// Gets the A2S_INFO_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        InfoResponse GetInfo(int maxRetries = 10);
+
+        /// <summary>
+        /// Gets the A2S_PLAYERS_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        PlayerResponse GetPlayers(int maxRetries = 10);
+
+        /// <summary>
+        /// Gets the A2S_RULES_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        RuleResponse GetRules(int maxRetries = 10);
     }
 }
