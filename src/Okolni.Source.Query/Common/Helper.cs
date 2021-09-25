@@ -13,13 +13,24 @@ namespace Okolni.Source.Common
             return result;
         }
 
-        public static T[] InsertArray<T>(this T[] data, int index, T[]arrayToInsert)
+        public static T[] InsertArray<T>(this T[] data, int index, T[] arrayToInsert)
         {
             int maxlength = data.Length - index;
-            if(arrayToInsert.Length > maxlength)
+            if (arrayToInsert.Length > maxlength)
                 arrayToInsert = arrayToInsert.SubArray(0, arrayToInsert.Length - maxlength);
             Array.Copy(arrayToInsert, 0, data, index, arrayToInsert.Length);
             return data;
+        }
+
+        public static void AppendToArray<T>(ref T[] data, T[] arrayToAppend)
+        {
+            int i = data.Length;
+            Array.Resize(ref data, data.Length + arrayToAppend.Length);
+            for (int j = 0; j < arrayToAppend.Length; j++)
+            {
+                data[i] = arrayToAppend[j];
+                i++;
+            }
         }
 
         public static int GetNextNullCharPosition(this byte[] data, int startindex)
@@ -37,7 +48,8 @@ namespace Okolni.Source.Common
             return new ByteReader(data);
         }
 
-        public static ServerType ToServerType(this byte data) {
+        public static ServerType ToServerType(this byte data)
+        {
             if (!Constants.ByteServerTypeMapping.TryGetValue(data, out var returnval))
                 throw new ArgumentException("Given byte cannot be parsed");
             else

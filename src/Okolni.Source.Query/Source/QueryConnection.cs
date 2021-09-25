@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Okolni.Source.Common;
 using Okolni.Source.Common.ByteHelper;
 using Okolni.Source.Query.Responses;
-using static Okolni.Source.Common.Enums;
 
 namespace Okolni.Source.Query
 {
@@ -71,12 +69,12 @@ namespace Okolni.Source.Query
             }
         }
 
-        private void request(byte[] requestMessage)
+        private void Request(byte[] requestMessage)
         {
             m_udpClient.Send(requestMessage, requestMessage.Length);
         }
 
-        private byte[] fetchResponse()
+        private byte[] FetchResponse()
         {
             byte[] response = m_udpClient.Receive(ref m_endPoint);
             IByteReader byteReader = response.GetByteReader();
@@ -95,15 +93,12 @@ namespace Okolni.Source.Query
         /// </summary>
         /// <returns>InfoResponse containing all Infos</returns>
         /// <exception cref="SourceQueryException"></exception>
-        public InfoResponse GetInfo()
+        public InfoResponse GetInfo(int maxRetries = 10)
         {
             try
             {
-                request(Constants.A2S_INFO_REQUEST);
-                var response = fetchResponse();
+                var byteReader = RequestDataFromServer(Constants.A2S_INFO_REQUEST, out byte header, maxRetries);
 
-                var byteReader = response.GetByteReader();
-                byte header = byteReader.GetByte();
                 if (header != 0x49)
                     throw new ArgumentException("The fetched Response is no A2S_INFO Response.");
 
@@ -173,26 +168,11 @@ namespace Okolni.Source.Query
         /// </summary>
         /// <returns>PlayerResponse containing all players </returns>
         /// <exception cref="SourceQueryException"></exception>
-        public PlayerResponse GetPlayers()
+        public PlayerResponse GetPlayers(int maxRetries = 10)
         {
             try
             {
-                var req = Constants.A2S_PLAYER_CHALLENGE_REQUEST;
-
-                request(req);
-                byte[] response = fetchResponse();
-                IByteReader byteReader = response.GetByteReader();
-                if (byteReader.GetByte().Equals(0x41))
-                {
-                    req[5] = byteReader.GetByte();
-                    req[6] = byteReader.GetByte();
-                    req[7] = byteReader.GetByte();
-                    req[8] = byteReader.GetByte();
-                    request(req);
-                    response = fetchResponse();
-                }
-                byteReader = response.GetByteReader();
-                byte header = byteReader.GetByte();
+                var byteReader = RequestDataFromServer(Constants.A2S_PLAYER_CHALLENGE_REQUEST, out byte header, maxRetries, true);
                 if (!header.Equals(0x44))
                     throw new ArgumentException("Response was no player response.");
 
@@ -234,26 +214,11 @@ namespace Okolni.Source.Query
         /// </summary>
         /// <returns>RuleResponse containing all rules as a Dictionary</returns>
         /// <exception cref="SourceQueryException"></exception>
-        public RuleResponse GetRules()
+        public RuleResponse GetRules(int maxRetries = 10)
         {
             try
             {
-                var req = Constants.A2S_RULES_CHALLENGE_REQUEST;
-
-                request(req);
-                byte[] response = fetchResponse();
-                IByteReader byteReader = response.GetByteReader();
-                if (byteReader.GetByte().Equals(0x41))
-                {
-                    req[5] = byteReader.GetByte();
-                    req[6] = byteReader.GetByte();
-                    req[7] = byteReader.GetByte();
-                    req[8] = byteReader.GetByte();
-                    request(req);
-                    response = fetchResponse();
-                }
-                byteReader = response.GetByteReader();
-                byte header = byteReader.GetByte();
+                var byteReader = RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, out byte header, maxRetries, true);
                 if (!header.Equals(0x45))
                     throw new ArgumentException("Response was no rules response.");
 
@@ -270,6 +235,42 @@ namespace Okolni.Source.Query
             {
                 throw new SourceQueryException("Could not gather Rules", ex);
             }
+        }
+
+        public IByteReader RequestDataFromServer(byte[] request, out byte header, int maxRetries, bool replaceLastBytesInRequest = false)
+        {
+            Request(request);
+            var response = FetchResponse();
+
+            var byteReader = response.GetByteReader();
+            header = byteReader.GetByte();
+
+            if (header == 0x41) // Header response is a challenge response so the challenge must be sent as well
+            {
+                var retries = 0;
+                do
+                {
+                    var retryRequest = request;
+                    var challenge = byteReader.GetBytes(4);
+                    if (replaceLastBytesInRequest)
+                        retryRequest.InsertArray(retryRequest.Length - 4, challenge);
+                    else
+                        Helper.AppendToArray(ref retryRequest, challenge);
+
+                    Request(retryRequest);
+
+                    response = FetchResponse();
+                    byteReader = response.GetByteReader();
+                    header = byteReader.GetByte();
+
+                    retries++;
+                } while (header == 0x41 && retries < maxRetries);
+
+                if (header == 0x41)
+                    throw new SourceQueryException("Retry limit exceeded for the request.");
+            }
+
+            return byteReader;
         }
     }
 }
