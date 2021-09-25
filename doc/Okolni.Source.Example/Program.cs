@@ -12,7 +12,6 @@ namespace Okolni.Source.Example
         {
             IQueryConnection conn = new QueryConnection();
 
-            // Exampleserver: ARK VALGUERO Server
             conn.Host = "127.0.0.1";
             conn.Port = 27015;
 
