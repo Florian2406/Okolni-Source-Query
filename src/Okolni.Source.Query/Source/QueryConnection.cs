@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -76,16 +77,67 @@ namespace Okolni.Source.Query
 
         private byte[] FetchResponse()
         {
-            byte[] response = m_udpClient.Receive(ref m_endPoint);
-            IByteReader byteReader = response.GetByteReader();
-            if (byteReader.GetLong().Equals(Constants.SimpleResponseHeader))
+            var response = m_udpClient.Receive(ref m_endPoint);
+            var byteReader = response.GetByteReader();
+            var header = byteReader.GetLong();
+            if (header.Equals(Constants.SimpleResponseHeader))
             {
                 return byteReader.GetRemaining();
             }
             else
             {
-                throw new NotImplementedException("Mulitpacket Responses are not yet supported.");
+                return FetchMultiPacketResponse(byteReader);
             }
+        }
+
+        private byte[] FetchMultiPacketResponse(IByteReader byteReader)
+        {
+            var firstResponse = new MultiPacketResponse { Id = byteReader.GetLong(), Total = byteReader.GetByte(), Number = byteReader.GetByte(), Size = byteReader.GetShort(), Payload = byteReader.GetRemaining() };
+
+            var compressed = (firstResponse.Id & 2147483648) == 2147483648; // Check for compression
+
+            var responses = new List<MultiPacketResponse>(new[] { firstResponse });
+            for (int i = 1; i < firstResponse.Total; i++)
+            {
+                var response = m_udpClient.Receive(ref m_endPoint);
+                var multiResponseByteReader = response.GetByteReader();
+                var header = multiResponseByteReader.GetLong();
+                if (header != Constants.MultiPacketResponseHeader)
+                {
+                    i--;
+                    continue;
+                }
+                var id = multiResponseByteReader.GetLong();
+                if (id != firstResponse.Id)
+                {
+                    i--;
+                    continue;
+                }
+                responses.Add(new MultiPacketResponse { Id = id, Total = multiResponseByteReader.GetByte(), Number = multiResponseByteReader.GetByte(), Size = multiResponseByteReader.GetShort(), Payload = multiResponseByteReader.GetRemaining() });
+            }
+
+            var assembledPayload = AssembleResponses(responses);
+            var assembledPayloadByteReader = assembledPayload.GetByteReader();
+
+            if (compressed)
+                throw new NotImplementedException("Compressed responses are not yet implemented");
+
+            var payloadHeader = assembledPayloadByteReader.GetLong();
+
+            return assembledPayloadByteReader.GetRemaining();
+        }
+
+        private byte[] AssembleResponses(IEnumerable<MultiPacketResponse> responses)
+        {
+            responses = responses.OrderBy(x => x.Number);
+            List<byte> assembledPayload = new List<byte>();
+
+            foreach (var response in responses)
+            {
+                assembledPayload.AddRange(response.Payload);
+            }
+
+            return assembledPayload.ToArray();
         }
 
         /// <summary>
@@ -99,7 +151,7 @@ namespace Okolni.Source.Query
             {
                 var byteReader = RequestDataFromServer(Constants.A2S_INFO_REQUEST, out byte header, maxRetries);
 
-                if (header != 0x49)
+                if (header != Constants.A2S_INFO_RESPONSE)
                     throw new ArgumentException("The fetched Response is no A2S_INFO Response.");
 
                 InfoResponse res = new InfoResponse();
@@ -173,7 +225,7 @@ namespace Okolni.Source.Query
             try
             {
                 var byteReader = RequestDataFromServer(Constants.A2S_PLAYER_CHALLENGE_REQUEST, out byte header, maxRetries, true);
-                if (!header.Equals(0x44))
+                if (!header.Equals(Constants.A2S_PLAYER_RESPONSE))
                     throw new ArgumentException("Response was no player response.");
 
                 PlayerResponse playerResponse = new PlayerResponse() { Header = header, Players = new List<Player>() };
@@ -219,7 +271,7 @@ namespace Okolni.Source.Query
             try
             {
                 var byteReader = RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, out byte header, maxRetries, true);
-                if (!header.Equals(0x45))
+                if (!header.Equals(Constants.A2S_RULES_RESPONSE))
                     throw new ArgumentException("Response was no rules response.");
 
                 RuleResponse ruleResponse = new RuleResponse() { Header = header, Rules = new Dictionary<string, string>() };
@@ -245,7 +297,7 @@ namespace Okolni.Source.Query
             var byteReader = response.GetByteReader();
             header = byteReader.GetByte();
 
-            if (header == 0x41) // Header response is a challenge response so the challenge must be sent as well
+            if (header == Constants.CHALLENGE_RESPONSE) // Header response is a challenge response so the challenge must be sent as well
             {
                 var retries = 0;
                 do
@@ -253,20 +305,20 @@ namespace Okolni.Source.Query
                     var retryRequest = request;
                     var challenge = byteReader.GetBytes(4);
                     if (replaceLastBytesInRequest)
-                        retryRequest.InsertArray(retryRequest.Length - 5, challenge);
+                        retryRequest.InsertArray(retryRequest.Length - 4, challenge);
                     else
                         Helper.AppendToArray(ref retryRequest, challenge);
 
                     Request(retryRequest);
 
-                    response = FetchResponse();
-                    byteReader = response.GetByteReader();
+                    var retryResponse = FetchResponse();
+                    byteReader = retryResponse.GetByteReader();
                     header = byteReader.GetByte();
 
                     retries++;
-                } while (header == 0x41 && retries < maxRetries);
+                } while (header == Constants.CHALLENGE_RESPONSE && retries < maxRetries);
 
-                if (header == 0x41)
+                if (header == Constants.CHALLENGE_RESPONSE)
                     throw new SourceQueryException("Retry limit exceeded for the request.");
             }
 

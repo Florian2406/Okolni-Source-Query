@@ -2,6 +2,7 @@
 using Okolni.Source.Common;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace Okolni.Source.Example
 {
@@ -18,12 +19,10 @@ namespace Okolni.Source.Example
             conn.Connect();
 
             var info = conn.GetInfo();
-            var players = conn.GetPlayers();
-            var rules = conn.GetRules();
-
-            //conn.Disconnect();
             Console.WriteLine($"Server info: {info.ToString()}");
+            var players = conn.GetPlayers();
             Console.WriteLine($"Current players: {string.Join("; ", players.Players.Select(p => p.Name))}");
+            var rules = conn.GetRules();
             Console.WriteLine($"Rules: {string.Join("; ", rules.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
         }
     }
