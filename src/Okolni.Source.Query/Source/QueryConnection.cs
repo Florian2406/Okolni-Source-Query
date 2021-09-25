@@ -253,7 +253,7 @@ namespace Okolni.Source.Query
                     var retryRequest = request;
                     var challenge = byteReader.GetBytes(4);
                     if (replaceLastBytesInRequest)
-                        retryRequest.InsertArray(retryRequest.Length - 5, challenge);
+                        retryRequest.InsertArray(retryRequest.Length - 4, challenge);
                     else
                         Helper.AppendToArray(ref retryRequest, challenge);
 
