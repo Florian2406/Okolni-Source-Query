@@ -6,6 +6,45 @@ namespace Okolni.Source.Common
 {
     public static class Constants
     {
+        // CONSTANTS
+
+        /// <summary>
+        /// The byte indicator of the challenge response.
+        /// </summary>
+        public const byte CHALLENGE_RESPONSE = 0x41; //Ignoring C# naming conventions as of the original name defined by valve
+
+        /// <summary>
+        /// The byte indicator of the info response.
+        /// </summary>
+        public const byte A2S_INFO_RESPONSE = 0x49; //Ignoring C# naming conventions as of the original name defined by valve
+
+        /// <summary>
+        /// The byte indicator of the player response.
+        /// </summary>
+        public const byte A2S_PLAYER_RESPONSE = 0x44; //Ignoring C# naming conventions as of the original name defined by valve
+
+        /// <summary>
+        /// The byte indicator of the rules response.
+        /// </summary>
+        public const byte A2S_RULES_RESPONSE = 0x45; //Ignoring C# naming conventions as of the original name defined by valve
+
+        /// <summary>
+        /// The Header for a simple response
+        /// </summary>
+        public const uint SimpleResponseHeader = 0xFFFFFFFF;
+
+        /// <summary>
+        /// The Header for a multi packet response
+        /// </summary>
+        public const uint MultiPacketResponseHeader = 0xFFFFFFFE;
+
+        /// <summary>
+        /// The game id for 'The Ship'
+        /// </summary>
+        public const short TheShipGameId = 2400;
+
+        // STATIC ARRAYS
+
         /// <summary>
         /// Retrieves information about the server including, but not limited to: its name, the map currently being played, and the number of players.
         /// </summary>
@@ -14,11 +53,6 @@ namespace Okolni.Source.Common
                 0xFF, 0xFF, 0xFF, 0xFF, 0x54, 0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x20, 0x45, 0x6E, 0x67, 0x69,
                 0x6E, 0x65, 0x20, 0x51, 0x75, 0x65, 0x72, 0x79, 0x00
         };
-
-        /// <summary>
-        /// The middle byte of the challenge response.
-        /// </summary>
-        public static byte CHALLENGE_RESPONE = 0x41;
 
         /// <summary>
         /// This query retrieves information about the players currently on the server. It needs an initial step to acquire a challenge number.
@@ -50,7 +84,7 @@ namespace Okolni.Source.Common
         };
 
         /// <summary>
-        /// Mapping for Byte to ServerType conversion
+        /// Mapping for byte to 'ServerType' conversion
         /// </summary>
         public static Dictionary<byte, ServerType> ByteServerTypeMapping = new Dictionary<byte, ServerType>() {
             { 0x64, ServerType.Dedicated },
@@ -60,7 +94,7 @@ namespace Okolni.Source.Common
         };
 
         /// <summary>
-        /// Mapping for Byte to Environment conversion
+        /// Mapping for byte to 'Environment' conversion
         /// </summary>
         public static Dictionary<byte, Enums.Environment> ByteEnvironmentMapping = new Dictionary<byte, Enums.Environment>()
         {
@@ -71,7 +105,7 @@ namespace Okolni.Source.Common
         };
 
         /// <summary>
-        /// Mapping for Byte to TheShipMode conversion
+        /// Mapping for byte to 'TheShipMode' conversion
         /// </summary>
         public static Dictionary<byte, TheShipMode> ByteTheShipModeMapping = new Dictionary<byte, TheShipMode>()
         {
@@ -83,16 +117,13 @@ namespace Okolni.Source.Common
             { 0x05, TheShipMode.TeamElimination }
         };
 
+        /// <summary>
+        /// Mapping for byte to 'Visibility' conversion
+        /// </summary>
         public static Dictionary<byte, Visibility> ByteVisibilityMapping = new Dictionary<byte, Visibility>()
         {
             { 0x00, Visibility.Public },
             { 0x01, Visibility.Private }
         };
-
-        public static uint SimpleResponseHeader = 0xFFFFFFFF;
-
-        public static uint MultiPacketResponseHeader = 0xFFFFFFFE;
-
-        public static short TheShipGameId = 2400;
     }
 }
