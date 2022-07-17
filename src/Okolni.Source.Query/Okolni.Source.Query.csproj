@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>1.2.0</Version>
     <Authors>Florian Adler</Authors>
     <Product>Okolni Source Query</Product>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,7 +13,8 @@
     <RepositoryUrl>https://github.com/Florian2406/Okolni-Source-Query</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>
-      1.1.0 Added multipacket responses
+	    1.2.0 Added Async methods
+	    1.1.0 Added multipacket responses
       1.0.1 Fixed bug that occured when the server returned a challenge instead of the response directly
       1.0.0 Initial Fullrelease, fixed bug when calling functions repetetive
       0.0.2 Rename to Okolni Source Query (instead of Okolni Source Engine Query)
@@ -22,7 +23,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Okolni.Source.Query</PackageId>
-    <FileVersion>1.1.0.0</FileVersion>
+    <FileVersion>1.2.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>

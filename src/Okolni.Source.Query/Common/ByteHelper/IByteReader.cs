@@ -56,7 +56,14 @@
         /// Extracts a long at the position of the iterator
         /// </summary>
         /// <returns>the long number</returns>
-        uint GetLong();
+        long GetLong();
+
+
+        /// <summary>
+        /// Extracts a long at the position of the iterator
+        /// </summary>
+        /// <returns>the long number</returns>
+        uint GetUInt();
 
         /// <summary>
         /// Extracts a float at the position of the iterator

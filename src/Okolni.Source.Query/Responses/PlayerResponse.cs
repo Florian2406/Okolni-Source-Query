@@ -37,14 +37,14 @@ namespace Okolni.Source.Query.Responses
         /// <summary>
         /// Player's score (usually "frags" or "kills".)
         /// </summary>
-        public uint Score { get; set; }
+        public long Score { get; set; }
 
         /// <summary>
         /// Time (in seconds) player has been connected to the server.
         /// </summary>
         public TimeSpan Duration { get; set; }
 
-        public uint? Deaths { get; set; }
-        public uint? Money { get; set; }
+        public long? Deaths { get; set; }
+        public long? Money { get; set; }
     }
 }

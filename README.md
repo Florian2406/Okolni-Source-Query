@@ -1,3 +1,43 @@
+# Fork 
+
+** Work in Progress **
+
+This Fork changes the following:
+
+Add ASync non-blocking methods
+
+Add Send and Recieve Timeouts
+
+Move to .NET 6 for CancellationTokenSupport on UDPClient Send/Recv Methods
+
+
+
+Rework implementation of retries to work with Send/Recieve timeouts
+
+
+Fix issues with A2S_Info/ServerInfo properties like Port/SteamID//SourceTv/Keywords/GameID which rely on the EDF (Extra Data Flag) which was improperly detecting those other fields being supported
+
+
+Obsolete Connect method, use Setup instead. UDP is connection-less.
+
+
+*** Note on Retries and Send/Recieve Timeouts ***
+
+Keep in mind the potentially worst case for execution time timeout*retries*4 (1 send auth, 1 receive auth, 1 send challenge, 1 receive result).
+
+For example, if you have send/recv timeout set to 500ms, and timeout as default (10 times), and the server is dead/won't respond, it will take 5000ms to detect that, as the library will send 10 challenge packets which will timeout after 500ms.
+
+
+Todo:
+
+[ ] Proper Unit Tests
+[ ] Further Testing
+[ ] Code clean up
+
+
+
+
+
 # Okolni-SourceEngine-Ouery
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion

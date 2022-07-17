@@ -113,7 +113,7 @@ namespace Okolni.Source.Query.Responses
         /// <summary>
         /// if ( EDF & 0x10 ) proves true: Server's SteamID.
         /// </summary>
-        public uint? SteamID { get; set; }
+        public long? SteamID { get; set; }
 
         /// <summary>
         /// if ( EDF & 0x40 ) proves true: Spectator port number for SourceTV.
@@ -135,7 +135,7 @@ namespace Okolni.Source.Query.Responses
         /// If this is present, a more accurate AppID is present in the low 24 bits. 
         /// The earlier AppID could have been truncated as it was forced into 16-bit storage.
         /// </summary>
-        public uint? GameID { get; set; }
+        public long? GameID { get; set; }
 
         /// <summary>
         /// If the Server is a The Ship Server

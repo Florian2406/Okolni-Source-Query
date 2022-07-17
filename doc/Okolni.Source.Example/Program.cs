@@ -1,26 +1,31 @@
 ﻿using Okolni.Source.Query;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Okolni.Source.Example
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             IQueryConnection conn = new QueryConnection();
 
-            conn.Host = "127.0.0.1";
-            conn.Port = 27015;
+            while (true)
+            {
+                conn.Host = "64.44.28.18";
+                conn.Port = 28016;
 
-            conn.Connect();
+                conn.Setup();
 
-            var info = conn.GetInfo();
-            Console.WriteLine($"Server info: {info.ToString()}");
-            var players = conn.GetPlayers();
-            Console.WriteLine($"Current players: {string.Join("; ", players.Players.Select(p => p.Name))}");
-            var rules = conn.GetRules();
-            Console.WriteLine($"Rules: {string.Join("; ", rules.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
+                var info = await conn.GetInfoAsync();
+                Console.WriteLine($"Server info: {info.ToString()}");
+                var players = await conn.GetPlayersAsync();
+                Console.WriteLine($"Current players: {string.Join("; ", players.Players.Select(p => p.Name))}");
+                var rules = await conn.GetRulesAsync();
+                Console.WriteLine($"Rules: {string.Join("; ", rules.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
+                await Task.Delay(2000);
+            }
         }
     }
 }
