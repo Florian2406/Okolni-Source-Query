@@ -233,7 +233,7 @@ namespace Okolni.Source.Query
                 res.Map = byteReader.GetString();
                 res.Folder = byteReader.GetString();
                 res.Game = byteReader.GetString();
-                res.ID = byteReader.GetShort();
+                res.ID = byteReader.GetUShort();
                 res.Players = byteReader.GetByte();
                 res.MaxPlayers = byteReader.GetByte();
                 res.Bots = byteReader.GetByte();
@@ -257,15 +257,15 @@ namespace Okolni.Source.Query
 
                     if ((res.EDF & Constants.EDF_PORT) == Constants.EDF_PORT)
                     {
-                        res.Port = byteReader.GetShort();
+                        res.Port = byteReader.GetUShort();
                     }
                     if ((res.EDF & Constants.EDF_STEAMID) == Constants.EDF_STEAMID)
                     {
-                        res.SteamID = byteReader.GetLong();
+                        res.SteamID = byteReader.GetULong();
                     }
                     if ((res.EDF & Constants.EDF_SOURCETV) == Constants.EDF_SOURCETV)
                     {
-                        res.SourceTvPort = byteReader.GetShort();
+                        res.SourceTvPort = byteReader.GetUShort();
                         res.SourceTvName = byteReader.GetString();
                     }
                     if ((res.EDF & Constants.EDF_KEYWORDS) == Constants.EDF_KEYWORDS)
@@ -274,7 +274,7 @@ namespace Okolni.Source.Query
                     }
                     if ((res.EDF & Constants.EDF_GAMEID) == Constants.EDF_GAMEID)
                     {
-                        res.GameID = byteReader.GetLong();
+                        res.GameID = byteReader.GetULong();
                     }
                 }
 

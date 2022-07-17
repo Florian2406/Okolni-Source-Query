@@ -13,8 +13,8 @@ namespace Okolni.Source.Example
 
             while (true)
             {
-                conn.Host = "64.44.28.18";
-                conn.Port = 28016;
+                conn.Host = "185.239.211.62";
+                conn.Port = 39215;
 
                 conn.Setup();
 
