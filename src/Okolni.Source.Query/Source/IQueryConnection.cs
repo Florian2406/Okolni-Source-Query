@@ -1,5 +1,7 @@
 ﻿using Okolni.Source.Query.Responses;
 using System;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Okolni.Source.Query
 {
@@ -46,18 +48,50 @@ namespace Okolni.Source.Query
         /// Gets the A2S_INFO_RESPONSE from the server
         /// </summary>
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
         InfoResponse GetInfo(int maxRetries = 10);
 
         /// <summary>
         /// Gets the A2S_PLAYERS_RESPONSE from the server
         /// </summary>
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
         PlayerResponse GetPlayers(int maxRetries = 10);
 
         /// <summary>
         /// Gets the A2S_RULES_RESPONSE from the server
         /// </summary>
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
         RuleResponse GetRules(int maxRetries = 10);
+
+
+
+        /// <summary>
+        /// Gets the A2S_INFO_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
+        Task<InfoResponse> GetInfoAsync(int maxRetries = 10);
+
+        /// <summary>
+        /// Gets the A2S_PLAYERS_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
+        Task<PlayerResponse> GetPlayersAsync(int maxRetries = 10);
+
+        /// <summary>
+        /// Gets the A2S_RULES_RESPONSE from the server
+        /// </summary>
+        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
+        /// <exception cref="SocketException"></exception>
+        /// <exception cref="TimeoutException"></exception>
+        Task<RuleResponse> GetRulesAsync(int maxRetries = 10);
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Okolni.Source.Common;
 using Okolni.Source.Common.ByteHelper;
 using Okolni.Source.Query.Responses;
@@ -70,15 +71,17 @@ namespace Okolni.Source.Query
             }
         }
 
-        private void Request(byte[] requestMessage)
+        private async Task Request(byte[] requestMessage)
         {
-            m_udpClient.Send(requestMessage, requestMessage.Length);
+            await m_udpClient.SendAsync(requestMessage, requestMessage.Length);
         }
 
-        private byte[] FetchResponse()
+        private async Task<byte[]> FetchResponse()
         {
-            var response = m_udpClient.Receive(ref m_endPoint);
-            var byteReader = response.GetByteReader();
+            var response = await m_udpClient.ReceiveAsync();
+
+
+            var byteReader = response.Buffer.GetByteReader();
             var header = byteReader.GetLong();
             if (header.Equals(Constants.SimpleResponseHeader))
             {
@@ -86,11 +89,11 @@ namespace Okolni.Source.Query
             }
             else
             {
-                return FetchMultiPacketResponse(byteReader);
+                return await FetchMultiPacketResponse(byteReader);
             }
         }
 
-        private byte[] FetchMultiPacketResponse(IByteReader byteReader)
+        private async Task<byte[]> FetchMultiPacketResponse(IByteReader byteReader)
         {
             var firstResponse = new MultiPacketResponse { Id = byteReader.GetLong(), Total = byteReader.GetByte(), Number = byteReader.GetByte(), Size = byteReader.GetShort(), Payload = byteReader.GetRemaining() };
 
@@ -140,16 +143,28 @@ namespace Okolni.Source.Query
             return assembledPayload.ToArray();
         }
 
+
         /// <summary>
-        /// Gets the servers general informations
+        /// Gets the servers general information
         /// </summary>
         /// <returns>InfoResponse containing all Infos</returns>
         /// <exception cref="SourceQueryException"></exception>
-        public InfoResponse GetInfo(int maxRetries = 10)
+        public InfoResponse GetInfo(int maxRetries = 10) => GetInfoAsync().GetAwaiter().GetResult();
+
+
+        /// <summary>
+        /// Gets the servers general information
+        /// </summary>
+        /// <returns>InfoResponse containing all Infos</returns>
+        /// <exception cref="SourceQueryException"></exception>
+        public async Task<InfoResponse> GetInfoAsync(int maxRetries = 10)
         {
             try
             {
-                var byteReader = RequestDataFromServer(Constants.A2S_INFO_REQUEST, out byte header, maxRetries);
+                var requestData = await RequestDataFromServer(Constants.A2S_INFO_REQUEST, maxRetries);
+
+                var byteReader = requestData.reader;
+                var header = requestData.header;
 
                 if (header != Constants.A2S_INFO_RESPONSE)
                     throw new ArgumentException("The fetched Response is no A2S_INFO Response.");
@@ -220,11 +235,25 @@ namespace Okolni.Source.Query
         /// </summary>
         /// <returns>PlayerResponse containing all players </returns>
         /// <exception cref="SourceQueryException"></exception>
-        public PlayerResponse GetPlayers(int maxRetries = 10)
+        public PlayerResponse GetPlayers(int maxRetries = 10) => GetPlayersAsync().GetAwaiter().GetResult();
+
+
+
+        /// <summary>
+        /// Gets all active players on a server
+        /// </summary>
+        /// <returns>PlayerResponse containing all players </returns>
+        /// <exception cref="SourceQueryException"></exception>
+        /// 
+        public async Task<PlayerResponse> GetPlayersAsync(int maxRetries = 10)
         {
             try
             {
-                var byteReader = RequestDataFromServer(Constants.A2S_PLAYER_CHALLENGE_REQUEST, out byte header, maxRetries, true);
+                var requestData = await RequestDataFromServer(Constants.A2S_PLAYER_CHALLENGE_REQUEST, maxRetries, true);
+
+                var byteReader = requestData.reader;
+                var header = requestData.header;
+
                 if (!header.Equals(Constants.A2S_PLAYER_RESPONSE))
                     throw new ArgumentException("Response was no player response.");
 
@@ -266,11 +295,23 @@ namespace Okolni.Source.Query
         /// </summary>
         /// <returns>RuleResponse containing all rules as a Dictionary</returns>
         /// <exception cref="SourceQueryException"></exception>
-        public RuleResponse GetRules(int maxRetries = 10)
+        public RuleResponse GetRules(int maxRetries = 10) => GetRulesAsync().GetAwaiter().GetResult();
+
+
+        /// <summary>
+        /// Gets the rules of the server
+        /// </summary>
+        /// <returns>RuleResponse containing all rules as a Dictionary</returns>
+        /// <exception cref="SourceQueryException"></exception>
+        public async Task<RuleResponse> GetRulesAsync(int maxRetries = 10)
         {
             try
             {
-                var byteReader = RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, out byte header, maxRetries, true);
+                var requestData = await RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, maxRetries, true);
+
+                var byteReader = requestData.reader;
+                var header = requestData.header;
+
                 if (!header.Equals(Constants.A2S_RULES_RESPONSE))
                     throw new ArgumentException("Response was no rules response.");
 
@@ -289,13 +330,13 @@ namespace Okolni.Source.Query
             }
         }
 
-        public IByteReader RequestDataFromServer(byte[] request, out byte header, int maxRetries, bool replaceLastBytesInRequest = false)
+        public async Task<(IByteReader reader, byte header)> RequestDataFromServer(byte[] request, int maxRetries, bool replaceLastBytesInRequest = false)
         {
-            Request(request);
-            var response = FetchResponse();
+            await Request(request);
+            var response = await FetchResponse();
 
             var byteReader = response.GetByteReader();
-            header = byteReader.GetByte();
+            var header = byteReader.GetByte();
 
             if (header == Constants.CHALLENGE_RESPONSE) // Header response is a challenge response so the challenge must be sent as well
             {
@@ -309,9 +350,9 @@ namespace Okolni.Source.Query
                     else
                         Helper.AppendToArray(ref retryRequest, challenge);
 
-                    Request(retryRequest);
+                    await Request(retryRequest);
 
-                    var retryResponse = FetchResponse();
+                    var retryResponse = await FetchResponse();
                     byteReader = retryResponse.GetByteReader();
                     header = byteReader.GetByte();
 
@@ -322,7 +363,7 @@ namespace Okolni.Source.Query
                     throw new SourceQueryException("Retry limit exceeded for the request.");
             }
 
-            return byteReader;
+            return (byteReader, header);
         }
     }
 }
