@@ -1,12 +1,13 @@
 ﻿using Okolni.Source.Query;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Okolni.Source.Example
 {
     public class Program
     {
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             IQueryConnection conn = new QueryConnection();
 
@@ -21,6 +22,17 @@ namespace Okolni.Source.Example
             Console.WriteLine($"Current players: {string.Join("; ", players.Players.Select(p => p.Name))}");
             var rules = conn.GetRules();
             Console.WriteLine($"Rules: {string.Join("; ", rules.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
+
+
+
+
+            var infoAsync = await conn.GetInfoAsync();
+            Console.WriteLine($"Server info: {infoAsync.ToString()}");
+            var playersAsync = await conn.GetPlayersAsync();
+            Console.WriteLine($"Current players: {string.Join("; ", playersAsync.Players.Select(p => p.Name))}");
+            var rulesAsync = await conn.GetRulesAsync();
+            Console.WriteLine($"Rules: {string.Join("; ", rulesAsync.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
+
         }
     }
 }
