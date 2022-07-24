@@ -1,3 +1,5 @@
+using System.Net;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Okolni.Source.Query;
 using Okolni.Source.Common;
@@ -30,7 +32,7 @@ namespace Okolni.Source.Query.Test
         }
 
         [TestMethod]
-        public void AsyncQueryTest()
+        public async Task AsyncQueryTest()
         {
             IQueryConnection conn = new QueryConnection();
 
@@ -40,12 +42,28 @@ namespace Okolni.Source.Query.Test
 
             conn.Connect();
 
-            var players = conn.GetPlayersAsync();
-            var info = conn.GetInfoAsync();
-            var rules = conn.GetRulesAsync();
+            var players = await conn.GetPlayersAsync();
+            var info = await conn.GetInfoAsync();
+            var rules = await conn.GetRulesAsync();
             Assert.IsNotNull(players);
             Assert.IsNotNull(info);
             Assert.IsNotNull(rules);
+        }
+
+        [TestMethod]
+        //192.0.2.0/24 is reserved documentation range
+        [DataRow("192.0.2.0", 27015)]
+        public async Task QueryTestFailCondition(string Host, int Port)
+        {
+            IQueryConnection conn = new QueryConnection();
+            conn.Host = Host;
+            conn.Port = Port;
+
+            conn.Connect();
+
+
+            await Assert.ThrowsExceptionAsync<SourceQueryException>(async () =>
+                await conn.GetInfoAsync());
         }
     }
 }
