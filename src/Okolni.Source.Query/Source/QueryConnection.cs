@@ -62,14 +62,7 @@ namespace Okolni.Source.Query
         /// <inheritdoc />
         public void Disconnect()
         {
-            if (m_udpClient != null)
-            {
-                if (m_udpClient.Client != null && m_udpClient.Client.Connected)
-                {
-                    m_udpClient.Client.Disconnect(false);
-                }
-                m_udpClient.Dispose();
-            }
+            m_udpClient?.Dispose();
         }
 
         private async Task Request(byte[] requestMessage)
