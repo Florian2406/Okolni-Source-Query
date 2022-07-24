@@ -23,7 +23,7 @@ namespace Okolni.Source.Query.Test
             var players2 = conn.GetPlayers();
             Assert.IsNotNull(players1);
             Assert.IsNotNull(players2);
-            //conn.Disconnect();
+            conn.Disconnect();
             // Console.WriteLine(players1.ToString());
             // Console.WriteLine(players2.ToString());
             // Console.WriteLine(players3.ToString());
@@ -48,6 +48,7 @@ namespace Okolni.Source.Query.Test
             Assert.IsNotNull(players);
             Assert.IsNotNull(info);
             Assert.IsNotNull(rules);
+            conn.Disconnect();
         }
 
         [TestMethod]
@@ -64,6 +65,7 @@ namespace Okolni.Source.Query.Test
 
             await Assert.ThrowsExceptionAsync<SourceQueryException>(async () =>
                 await conn.GetInfoAsync());
+            conn.Disconnect();
         }
     }
 }

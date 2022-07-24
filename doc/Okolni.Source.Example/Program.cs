@@ -11,7 +11,7 @@ namespace Okolni.Source.Example
         {
             IQueryConnection conn = new QueryConnection();
 
-            conn.Host = "127.0.0.1";
+            conn.Host = "192.0.2.0";
             conn.Port = 27015;
 
             conn.Connect();
@@ -32,6 +32,9 @@ namespace Okolni.Source.Example
             Console.WriteLine($"Current players: {string.Join("; ", playersAsync.Players.Select(p => p.Name))}");
             var rulesAsync = await conn.GetRulesAsync();
             Console.WriteLine($"Rules: {string.Join("; ", rulesAsync.Rules.Select(r => $"{r.Key}: {r.Value}"))}");
+
+            // Disposes Socket
+            conn.Disconnect();
 
         }
     }
