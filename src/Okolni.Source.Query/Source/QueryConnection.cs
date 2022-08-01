@@ -71,57 +71,34 @@ namespace Okolni.Source.Query
         }
 
 
-        //https://stackoverflow.com/questions/41019997/udpclient-receiveasync-correct-early-termination/41041601?noredirect=1#comment69291144_41041601
-        /// <summary>
-        /// Asynchronous request to wait for data with the possibility of early exit
-        /// (call the Disconnect() method to exit the wait)
-        /// </summary>
-        /// <param name="client">A working instance of the UdpClient class</param>
-        /// <param name="breakToken">Token of early termination</param>
-        /// <returns>If Token is cancelled before this method was called or while waiting for
-        /// response, will return an empty UdpReceiveResult; upon successful receipt of the answer, the result
-        /// asynchronous read operation</returns>
-        public Task<UdpReceiveResult> ReceiveAsync(UdpClient client, CancellationToken breakToken)
-            => breakToken.IsCancellationRequested
-                ? Task<UdpReceiveResult>.Run(() => new UdpReceiveResult())
-                : Task<UdpReceiveResult>.Factory.FromAsync(
-                    (callback, state) => client.BeginReceive(callback, state),
-                    (ar) =>
-                    {
-                        // Prevent <exception cref="ObjectDisposedException"/>
-                        if (breakToken.IsCancellationRequested)
-                            return new UdpReceiveResult();
 
-                        IPEndPoint remoteEP = null;
-                        var buffer = client.EndReceive(ar, ref remoteEP);
-                        return new UdpReceiveResult(buffer, remoteEP);
-                    },
-                    null);
-
+        private async Task<byte[]> ReceiveAsync()
+        {
+            var newCancellationToken = new CancellationTokenSource();
+            newCancellationToken.CancelAfter(m_udpClient.Client.ReceiveTimeout);
+            try
+            {
+                Memory<byte> buffer = new byte[65527];
+                var udpClientReceive =
+                    await m_udpClient.Client.ReceiveAsync(buffer, SocketFlags.None, newCancellationToken.Token);
+                var recvPacket = buffer[..udpClientReceive];
+                return recvPacket.ToArray();
+            }
+            catch (OperationCanceledException)
+            {
+                throw new TimeoutException($"Receive took longer then the specified timeout {m_udpClient.Client.RemoteEndPoint}");
+            }
+        }
 
 
         private async Task<byte[]> FetchResponse()
         {
-            var tokenSource = new CancellationTokenSource();
-            tokenSource.CancelAfter(m_udpClient.Client.ReceiveTimeout);
-            var responseTask =  ReceiveAsync(m_udpClient, tokenSource.Token);
-            var delayTask = Task.Delay(m_udpClient.Client.ReceiveTimeout, tokenSource.Token);
-            
-            if (await Task.WhenAny(responseTask, delayTask ) == delayTask)
-                throw new SourceQueryException("Timed out waiting for reply from server");
-            tokenSource.Cancel();
-            var response = await responseTask;
-
-            var byteReader = response.Buffer.GetByteReader();
+            var response = await ReceiveAsync();
+            var byteReader = response.GetByteReader();
             var header = byteReader.GetLong();
             if (header.Equals(Constants.SimpleResponseHeader))
-            {
                 return byteReader.GetRemaining();
-            }
-            else
-            {
-                return await FetchMultiPacketResponse(byteReader);
-            }
+            return await FetchMultiPacketResponse(byteReader);
         }
 
         private async Task<byte[]> FetchMultiPacketResponse(IByteReader byteReader)
