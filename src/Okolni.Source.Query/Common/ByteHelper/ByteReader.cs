@@ -107,6 +107,19 @@ namespace Okolni.Source.Common.ByteHelper
             return shortValue;
         }
 
+
+        /// <inheritdoc/>
+        public ushort GetUShort()
+        {
+            if (Remaining < 2)
+                throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
+
+            ushort shortValue = BitConverter.ToUInt16(Response, Iterator);
+            Iterator += 2;
+
+            return shortValue;
+        }
+
         /// <inheritdoc/>
         public int GetInt()
         {
@@ -119,14 +132,40 @@ namespace Okolni.Source.Common.ByteHelper
             return intValue;
         }
 
+
         /// <inheritdoc/>
-        public uint GetLong()
+        public uint GetUInt()
         {
             if (Remaining < 4)
                 throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
 
-            uint longValue = BitConverter.ToUInt32(Response, Iterator);
+            uint uintValue = BitConverter.ToUInt32(Response, Iterator);
             Iterator += 4;
+
+            return uintValue;
+        }
+
+
+        /// <inheritdoc/>
+        public long GetLong()
+        {
+            if (Remaining < 8)
+                throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
+
+            long longValue = BitConverter.ToInt64(Response, Iterator);
+            Iterator += 8;
+
+            return longValue;
+        }
+
+        /// <inheritdoc/>
+        public ulong GetULong()
+        {
+            if (Remaining < 8)
+                throw new ArgumentOutOfRangeException("Not Enough bytes left to read");
+
+            ulong longValue = BitConverter.ToUInt64(Response, Iterator);
+            Iterator += 8;
 
             return longValue;
         }
