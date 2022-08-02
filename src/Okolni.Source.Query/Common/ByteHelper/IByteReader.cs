@@ -46,6 +46,14 @@
         /// <returns>the short number</returns>
         short GetShort();
 
+
+        /// <summary>
+        /// Extracts a ushort at the position of the iterator (16 Bit unsigned int)
+        /// </summary>
+        /// <returns>the ushort number</returns>
+        ushort GetUShort();
+
+
         /// <summary>
         /// Extracts an int at the position of the iterator
         /// </summary>
@@ -53,10 +61,23 @@
         int GetInt();
 
         /// <summary>
+        /// Extracts an uint at the position of the iterator
+        /// </summary>
+        /// <returns>the uint number</returns>
+        uint GetUInt();
+
+        /// <summary>
         /// Extracts a long at the position of the iterator
         /// </summary>
         /// <returns>the long number</returns>
-        uint GetLong();
+        long GetLong();
+
+        /// <summary>
+        /// Extracts a Ulong at the position of the iterator (64 bit unsigned number)
+        /// </summary>
+        /// <returns>the Ulong number</returns>
+        ulong GetULong();
+
 
         /// <summary>
         /// Extracts a float at the position of the iterator
