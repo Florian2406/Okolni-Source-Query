@@ -50,6 +50,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         InfoResponse GetInfo(int maxRetries = 10);
 
         /// <summary>
@@ -58,6 +59,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         PlayerResponse GetPlayers(int maxRetries = 10);
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         RuleResponse GetRules(int maxRetries = 10);
 
 
@@ -76,6 +79,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         Task<InfoResponse> GetInfoAsync(int maxRetries = 10);
 
         /// <summary>
@@ -84,6 +88,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         Task<PlayerResponse> GetPlayersAsync(int maxRetries = 10);
 
         /// <summary>
@@ -92,6 +97,7 @@ namespace Okolni.Source.Query
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         Task<RuleResponse> GetRulesAsync(int maxRetries = 10);
     }
 }
