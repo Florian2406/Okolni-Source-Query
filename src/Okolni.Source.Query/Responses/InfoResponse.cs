@@ -41,22 +41,22 @@ namespace Okolni.Source.Query.Responses
         /// <summary>
         /// Steam Application ID of game. (Steam Application ID: https://developer.valvesoftware.com/wiki/Steam_Application_IDs)
         /// </summary>
-        public short ID { get; set; }
+        public ushort ID { get; set; }
 
         /// <summary>
         /// Number of players on the server.
         /// </summary>
-        public int Players { get; set; }
+        public byte Players { get; set; }
 
         /// <summary>
         /// Maximum number of players the server reports it can hold.
         /// </summary>
-        public int MaxPlayers { get; set; }
+        public byte MaxPlayers { get; set; }
 
         /// <summary>
         /// Number of bots on the server.
         /// </summary>
-        public int Bots { get; set; }
+        public byte Bots { get; set; }
 
         /// <summary>
         /// Indicates the type of server
@@ -88,7 +88,7 @@ namespace Okolni.Source.Query.Responses
         /// <summary>
         /// [ONLY AVAILABLE IF THE SERVER IS RUNNING 'The Ship'] The number of witnesses necessary to have a player arrested.
         /// </summary>
-        public int? Witnesses { get; set; }
+        public byte? Witnesses { get; set; }
 
         /// <summary>
         /// [ONLY AVAILABLE IF THE SERVER IS RUNNING 'The Ship'] Time (in seconds) before a player is arrested while being witnessed.
@@ -108,17 +108,17 @@ namespace Okolni.Source.Query.Responses
         /// <summary>
         /// if ( EDF & 0x80 ) proves true: The server's game port number.
         /// </summary>
-        public short? Port { get; set; }
+        public ushort? Port { get; set; }
 
         /// <summary>
         /// if ( EDF & 0x10 ) proves true: Server's SteamID.
         /// </summary>
-        public uint? SteamID { get; set; }
+        public ulong? SteamID { get; set; }
 
         /// <summary>
         /// if ( EDF & 0x40 ) proves true: Spectator port number for SourceTV.
         /// </summary>
-        public short? SourceTvPort { get; set; }
+        public ushort? SourceTvPort { get; set; }
 
         /// <summary>
         /// if ( EDF & 0x40 ) proves true: Name of the spectator server for SourceTV.
@@ -135,7 +135,7 @@ namespace Okolni.Source.Query.Responses
         /// If this is present, a more accurate AppID is present in the low 24 bits. 
         /// The earlier AppID could have been truncated as it was forced into 16-bit storage.
         /// </summary>
-        public uint? GameID { get; set; }
+        public ulong? GameID { get; set; }
 
         /// <summary>
         /// If the Server is a The Ship Server
@@ -184,14 +184,14 @@ namespace Okolni.Source.Query.Responses
             response += $" Environment: {Environment};";
             response += $" Visibility: {Visibility};";
             response += $" VAC: {VAC};";
-            if(IsTheShip)
+            if (IsTheShip)
             {
                 response += $" Mode: {Mode};";
                 response += $" Witnesses: {Witnesses};";
                 response += $" Duration: {Duration};";
             }
             response += $" Version: {Version};";
-            if(HasGameID || HasPort || HasKeywords || HasSourceTv || HasSteamID)
+            if (HasGameID || HasPort || HasKeywords || HasSourceTv || HasSteamID)
             {
                 if (HasPort)
                     response += $" Port: {Port};";
