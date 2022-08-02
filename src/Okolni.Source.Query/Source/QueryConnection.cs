@@ -207,24 +207,24 @@ namespace Okolni.Source.Query
                 {
                     res.EDF = byteReader.GetByte();
 
-                    if ((res.EDF & 0x80) == 1)
+                    if ((res.EDF & Constants.EDF_PORT) == Constants.EDF_PORT)
                     {
                         res.Port = byteReader.GetUShort();
                     }
-                    if ((res.EDF & 0x10) == 1)
+                    if ((res.EDF & Constants.EDF_STEAMID) == Constants.EDF_STEAMID)
                     {
                         res.SteamID = byteReader.GetULong();
                     }
-                    if ((res.EDF & 0x40) == 1)
+                    if ((res.EDF & Constants.EDF_SOURCETV) == Constants.EDF_SOURCETV)
                     {
                         res.SourceTvPort = byteReader.GetUShort();
                         res.SourceTvName = byteReader.GetString();
                     }
-                    if ((res.EDF & 0x20) == 1)
+                    if ((res.EDF & Constants.EDF_KEYWORDS) == Constants.EDF_KEYWORDS)
                     {
                         res.KeyWords = byteReader.GetString();
                     }
-                    if ((res.EDF & 0x01) == 1)
+                    if ((res.EDF & Constants.EDF_GAMEID) == Constants.EDF_GAMEID)
                     {
                         res.GameID = byteReader.GetULong();
                     }
