@@ -95,7 +95,7 @@ namespace Okolni.Source.Query
         {
             var response = await ReceiveAsync();
             var byteReader = response.GetByteReader();
-            var header = byteReader.GetLong();
+            var header = byteReader.GetInt();
             if (header.Equals(Constants.SimpleResponseHeader))
                 return byteReader.GetRemaining();
             return await FetchMultiPacketResponse(byteReader);
@@ -103,7 +103,7 @@ namespace Okolni.Source.Query
 
         private async Task<byte[]> FetchMultiPacketResponse(IByteReader byteReader)
         {
-            var firstResponse = new MultiPacketResponse { Id = byteReader.GetLong(), Total = byteReader.GetByte(), Number = byteReader.GetByte(), Size = byteReader.GetShort(), Payload = byteReader.GetRemaining() };
+            var firstResponse = new MultiPacketResponse { Id = byteReader.GetInt(), Total = byteReader.GetByte(), Number = byteReader.GetByte(), Size = byteReader.GetShort(), Payload = byteReader.GetRemaining() };
 
             var compressed = (firstResponse.Id & 2147483648) == 2147483648; // Check for compression
 
@@ -112,13 +112,13 @@ namespace Okolni.Source.Query
             {
                 var response = m_udpClient.Receive(ref m_endPoint);
                 var multiResponseByteReader = response.GetByteReader();
-                var header = multiResponseByteReader.GetLong();
+                var header = multiResponseByteReader.GetInt();
                 if (header != Constants.MultiPacketResponseHeader)
                 {
                     i--;
                     continue;
                 }
-                var id = multiResponseByteReader.GetLong();
+                var id = multiResponseByteReader.GetInt();
                 if (id != firstResponse.Id)
                 {
                     i--;
@@ -133,7 +133,7 @@ namespace Okolni.Source.Query
             if (compressed)
                 throw new NotImplementedException("Compressed responses are not yet implemented");
 
-            var payloadHeader = assembledPayloadByteReader.GetLong();
+            var payloadHeader = assembledPayloadByteReader.GetUInt();
 
             return assembledPayloadByteReader.GetRemaining();
         }
@@ -185,7 +185,7 @@ namespace Okolni.Source.Query
                 res.Map = byteReader.GetString();
                 res.Folder = byteReader.GetString();
                 res.Game = byteReader.GetString();
-                res.ID = byteReader.GetShort();
+                res.ID = byteReader.GetUShort();
                 res.Players = byteReader.GetByte();
                 res.MaxPlayers = byteReader.GetByte();
                 res.Bots = byteReader.GetByte();
@@ -209,15 +209,15 @@ namespace Okolni.Source.Query
 
                     if ((res.EDF & 0x80) == 1)
                     {
-                        res.Port = byteReader.GetShort();
+                        res.Port = byteReader.GetUShort();
                     }
                     if ((res.EDF & 0x10) == 1)
                     {
-                        res.SteamID = byteReader.GetLong();
+                        res.SteamID = byteReader.GetULong();
                     }
                     if ((res.EDF & 0x40) == 1)
                     {
-                        res.SourceTvPort = byteReader.GetShort();
+                        res.SourceTvPort = byteReader.GetUShort();
                         res.SourceTvName = byteReader.GetString();
                     }
                     if ((res.EDF & 0x20) == 1)
@@ -226,7 +226,7 @@ namespace Okolni.Source.Query
                     }
                     if ((res.EDF & 0x01) == 1)
                     {
-                        res.GameID = byteReader.GetLong();
+                        res.GameID = byteReader.GetULong();
                     }
                 }
 
@@ -273,7 +273,7 @@ namespace Okolni.Source.Query
                     {
                         Index = byteReader.GetByte(),
                         Name = byteReader.GetString(),
-                        Score = byteReader.GetLong(),
+                        Score = byteReader.GetUInt(),
                         Duration = TimeSpan.FromSeconds(byteReader.GetFloat())
                     });
                 }
@@ -284,8 +284,8 @@ namespace Okolni.Source.Query
                     playerResponse.IsTheShip = true;
                     for (int i = 0; i < playercount; i++)
                     {
-                        playerResponse.Players[i].Deaths = byteReader.GetLong();
-                        playerResponse.Players[i].Money = byteReader.GetLong();
+                        playerResponse.Players[i].Deaths = byteReader.GetUInt();
+                        playerResponse.Players[i].Money = byteReader.GetUInt();
                     }
                 }
 
