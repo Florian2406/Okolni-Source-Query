@@ -29,14 +29,14 @@ namespace Okolni.Source.Common
         public const byte A2S_RULES_RESPONSE = 0x45; //Ignoring C# naming conventions as of the original name defined by valve
 
         /// <summary>
-        /// The Header for a simple response
+        /// The Header for a simple response - Always equal to -1 (0xFFFFFFFF). Means it isn't split.
         /// </summary>
-        public const uint SimpleResponseHeader = 0xFFFFFFFF;
+        public const int SimpleResponseHeader = -1;
 
         /// <summary>
-        /// The Header for a multi packet response
+        /// The Header for a multi packet response - Always equal to -2 (0xFFFFFFFE). Means the packet is split. 
         /// </summary>
-        public const uint MultiPacketResponseHeader = 0xFFFFFFFE;
+        public const int MultiPacketResponseHeader = -2;
 
         /// <summary>
         /// The game id for 'The Ship'
