@@ -39,6 +39,36 @@ namespace Okolni.Source.Common
         public const int MultiPacketResponseHeader = -2;
 
         /// <summary>
+        /// Only  if ( EDF & 0x80 ) proves true: Will there be a port value (short)
+        /// </summary>
+        public const byte EDF_PORT = 0x80;
+
+
+
+        /// <summary>
+        /// Only  if ( EDF & 0x10 ) proves true:  Will there be the Server's SteamID (Long)
+        /// </summary>
+        public const byte EDF_STEAMID = 0x10;
+
+
+        /// <summary>
+        /// Only  if ( EDF & 0x40 ) proves true: Will there be SourceTV Information (Port and Name)
+        /// </summary>
+        public const byte EDF_SOURCETV = 0x40;
+
+        /// <summary>
+        /// Only if ( EDF & 0x20 ) proves true: String of keywords that describe the server
+        /// </summary>
+        public const byte EDF_KEYWORDS = 0x20;
+
+
+        /// <summary>
+        /// Only if if ( EDF & 0x01 ) proves true: Will there be the Sever's 64-Bit GameID (The server's 64-bit GameID. If this is present, a more accurate AppID is present in the low 24 bits. The earlier AppID could have been truncated as it was forced into 16-bit storage. )
+        /// </summary>
+        public const byte EDF_GAMEID = 0x01;
+
+
+        /// <summary>
         /// The game id for 'The Ship'
         /// </summary>
         public const short TheShipGameId = 2400;
