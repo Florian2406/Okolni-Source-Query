@@ -174,6 +174,10 @@ namespace Okolni.Source.Query
                 var byteReader = requestData.reader;
                 var header = requestData.header;
 
+                if (header == Constants.A2S_INFO_RESPONSE_GOLDSOURCE)
+                    throw new ArgumentException("Obsolete GoldSource Response are not supported right now");
+
+
                 if (header != Constants.A2S_INFO_RESPONSE)
                     throw new ArgumentException("The fetched Response is no A2S_INFO Response.");
 

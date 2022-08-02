@@ -18,6 +18,12 @@ namespace Okolni.Source.Common
         /// </summary>
         public const byte A2S_INFO_RESPONSE = 0x49; //Ignoring C# naming conventions as of the original name defined by valve
 
+
+        /// <summary>
+        /// The byte indicator of the info response.
+        /// </summary>
+        public const byte A2S_INFO_RESPONSE_GOLDSOURCE = 0x6D; //Ignoring C# naming conventions as of the original name defined by valve
+
         /// <summary>
         /// The byte indicator of the player response.
         /// </summary>
