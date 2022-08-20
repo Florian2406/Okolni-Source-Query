@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.2.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Florian Adler</Authors>
     <Product>Okolni Source Query</Product>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/Florian2406/Okolni-Source-Query</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageReleaseNotes>
-      1.2.0 Update to .Net Standard 2.1, Added ASync Methods, fix parsing of Extra Data Fields, Change InfoResponse Data Types align with Steam Query Protocol
+      2.0.0 Update to .Net Standard 2.1, Added ASync Methods, fix parsing of Extra Data Fields, Change InfoResponse Data Types align with Steam Query Protocol
       1.1.0 Added multipacket responses
       1.0.1 Fixed bug that occured when the server returned a challenge instead of the response directly
       1.0.0 Initial Fullrelease, fixed bug when calling functions repetetive
@@ -23,7 +23,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Okolni.Source.Query</PackageId>
-    <FileVersion>1.2.0.0</FileVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
