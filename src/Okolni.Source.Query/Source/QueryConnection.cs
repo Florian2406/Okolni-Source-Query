@@ -342,6 +342,26 @@ namespace Okolni.Source.Query
             }
         }
 
+        public async Task<byte[]> GetRawRulesAsync(int maxRetries = 10)
+        {
+            try
+            {
+                var requestData = await RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, maxRetries, true);
+
+                var byteReader = requestData.reader;
+                var header = requestData.header;
+
+                if (!header.Equals(Constants.A2S_RULES_RESPONSE))
+                    throw new ArgumentException("Response was no rules response.");
+
+                return byteReader.GetBytes(byteReader.Remaining);
+            }
+            catch (Exception ex)
+            {
+                throw new SourceQueryException("Could not gather Rules", ex);
+            }
+        }
+
         public async Task<(IByteReader reader, byte header)> RequestDataFromServer(byte[] request, int maxRetries, bool replaceLastBytesInRequest = false)
         {
             await Request(request);
