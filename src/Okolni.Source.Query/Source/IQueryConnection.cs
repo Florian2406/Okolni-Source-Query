@@ -72,15 +72,6 @@ namespace Okolni.Source.Query
         RuleResponse GetRules(int maxRetries = 10);
 
         /// <summary>
-        /// Gets the A2S_RULES_RESPONSE from the server and returns the raw byte[]
-        /// </summary>
-        /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
-        /// <exception cref="SocketException"></exception>
-        /// <exception cref="TimeoutException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        Task<byte[]> GetRawRulesAsync(int maxRetries = 10);
-
-        /// <summary>
         /// Gets the A2S_INFO_RESPONSE from the server
         /// </summary>
         /// <param name="maxRetries">How often the get info should be retried if the server responds with a challenge request</param>
