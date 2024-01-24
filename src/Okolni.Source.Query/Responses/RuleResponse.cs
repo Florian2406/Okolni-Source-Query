@@ -15,5 +15,10 @@ namespace Okolni.Source.Query.Responses
         /// Dictionary of Rules on the Server
         /// </summary>
         public Dictionary<string, string> Rules { get; set; }
+        
+        /// <summary>
+        /// The response obtained from the server without any processing.
+        /// </summary>
+        public byte[] RawResponse { get; set; }
     }
 }
