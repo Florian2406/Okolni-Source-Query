@@ -327,7 +327,7 @@ namespace Okolni.Source.Query
                 if (!header.Equals(Constants.A2S_RULES_RESPONSE))
                     throw new ArgumentException("Response was no rules response.");
 
-                RuleResponse ruleResponse = new RuleResponse() { Header = header, Rules = new Dictionary<string, string>() };
+                RuleResponse ruleResponse = new RuleResponse() { Header = header, Rules = new Dictionary<string, string>(), RawResponse = byteReader.Response};
                 int rulecount = byteReader.GetShort();
                 for (int i = 1; i <= rulecount; i++)
                 {
@@ -335,26 +335,6 @@ namespace Okolni.Source.Query
                 }
 
                 return ruleResponse;
-            }
-            catch (Exception ex)
-            {
-                throw new SourceQueryException("Could not gather Rules", ex);
-            }
-        }
-
-        public async Task<byte[]> GetRawRulesAsync(int maxRetries = 10)
-        {
-            try
-            {
-                var requestData = await RequestDataFromServer(Constants.A2S_RULES_CHALLENGE_REQUEST, maxRetries, true);
-
-                var byteReader = requestData.reader;
-                var header = requestData.header;
-
-                if (!header.Equals(Constants.A2S_RULES_RESPONSE))
-                    throw new ArgumentException("Response was no rules response.");
-
-                return byteReader.GetBytes(byteReader.Remaining);
             }
             catch (Exception ex)
             {
